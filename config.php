@@ -1,6 +1,6 @@
 <?php
 
-$host = '';
+$host = 'test';
 $db   = '';
 $user = '';
 $pass = '';
