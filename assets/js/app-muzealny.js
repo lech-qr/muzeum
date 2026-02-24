@@ -1,27 +1,14 @@
 $(function () {
 
-    // Testy
-    // console.log("Test JS start");
-    // $(function () {
-    //     console.log("jQuery działa:", typeof $);
-
-    //     if ($('#itemsTable').length) {
-    //         console.log("Tabela znaleziona");
-    //     } else {
-    //         console.log("BRAK tabeli");
-    //     }
-    // });
-    // Testy - KONIEC
-
     $('#itemsTable').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: 'api/getItems.php',
+            url: '../api/muzealny-list.php',
             type: 'POST'
         },
         language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.8/i18n/pl.json'
+            url: '../assets/js/DataTable_pl.json'
         },
         pageLength: 25,
         order: [[0, "asc"]],
@@ -31,6 +18,7 @@ $(function () {
             { data: 'przedmiot' },
             {
                 data: 'zdjecie_lokalne',
+                class: 'img-column',
                 orderable: false,
                 render: function (data) {
 
@@ -38,9 +26,8 @@ $(function () {
 
                     return `
             <img 
-                src="images/${data}" 
-                style="height:60px; cursor:pointer; border-radius:4px;"
-                onclick="openImageModal('images/${data}')"
+                src="../images/muzealny/${data}" 
+                onclick="openImageModal('../images/muzealny/${data}')"
             >
         `;
                 }
@@ -51,7 +38,10 @@ $(function () {
                 data: 'opis',
                 render: function (data) {
                     if (!data) return '';
-                    return data.length > 400 ? data.substring(0, 400) + '...' : data;
+                    // return data.length > 400 ? data.substring(0, 400) + '...' : data;
+                    return data.length > 400
+                        ? data.slice(0, 400).replace(/\s+\S*$/, '') + ' <i>więcej…</i>'
+                        : data;
                 }
             }
         ]

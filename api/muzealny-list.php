@@ -1,9 +1,9 @@
 <?php
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-// ini_set('display_errors', 0);
-// error_reporting(0);
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+ini_set('display_errors', 0);
+error_reporting(0);
 
 require_once '../config.php';
 
@@ -52,7 +52,8 @@ $params = [];
 if ($search !== '') {
 
     $where = " WHERE (
-        r.przedmiot LIKE :s1
+        r.id LIKE :s0
+        OR r.przedmiot LIKE :s1
         OR r.nr_inwentarzowy LIKE :s2
         OR r.autor_szkola LIKE :s3
         OR r.czas_powstania LIKE :s4
@@ -61,6 +62,7 @@ if ($search !== '') {
 
 
     $params = [
+        ':s0' => "%$search%",
         ':s1' => "%$search%",
         ':s2' => "%$search%",
         ':s3' => "%$search%",
@@ -84,7 +86,7 @@ $sql = "
         r.autor_szkola,
         r.nr_inwentarzowy,
         r.opis
-    FROM rekordy r
+    FROM muzealny r
     JOIN dzialy d ON r.dzialy_id = d.id
     $where
     ORDER BY $columnName $orderDir
@@ -105,7 +107,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $totalRecords = $pdo->query("
     SELECT COUNT(*) 
-    FROM rekordy
+    FROM muzealny
 ")->fetchColumn();
 
 /*
@@ -118,7 +120,7 @@ if ($search !== '') {
 
     $countSql = "
         SELECT COUNT(*)
-        FROM rekordy r
+        FROM muzealny r
         JOIN dzialy d ON r.dzialy_id = d.id
         $where
     ";
