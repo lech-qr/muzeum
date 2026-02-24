@@ -1,0 +1,35 @@
+﻿// body {
+//   .active > .page-link,
+//   .page-link.active {
+//     z-index: 3;
+//     color: var(--bs-pagination-active-color);
+//     background-color: red;
+//     border-color: var(--bs-pagination-active-border-color);
+//   }
+// }
+.img-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  img {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 85vh;
+    object-fit: contain;
+  }
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+  }
+}
