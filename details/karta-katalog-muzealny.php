@@ -71,16 +71,20 @@ function slugify($text) {
         Udostępnij</button>
         <!-- Przyciski Poprzedni / Następny -->
         <?php if ($prev): ?>
-            <a class="nav-btn prev"
+            <a class="nav-btn prev" title="Poprzednia karta"
             href="/katalog-muzealny/<?= $prev['id'] ?>-<?= slugify($prev['przedmiot']) ?>">
-            ← Poprzednia karta
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                </svg>
             </a>
         <?php endif; ?>
 
         <?php if ($next): ?>
-            <a class="nav-btn next"
+            <a class="nav-btn next" title="Następna karta"
             href="/katalog-muzealny/<?= $next['id'] ?>-<?= slugify($next['przedmiot']) ?>">
-            Następna karta →
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+            </svg>
             </a>
         <?php endif; ?>
 
@@ -88,40 +92,125 @@ function slugify($text) {
 
             <header>
                 <h3>Muzeum Zamojskie w Zamościu</h3>
-                <p>Karta katalogowa eksponatu <strong>#<?= htmlspecialchars($item['id']) ?></strong> - nr. inw. <strong><?= htmlspecialchars($item['nr_inwentarzowy']) ?></strong> - Katalog Muzealny</p>
+                <p>Karta katalogowa eksponatu <strong>#<?= htmlspecialchars($item['id']) ?></strong> 
+                <?php if (!empty($item['nr_inwentarzowy'])): ?>
+                    - nr. inw. <strong><?= htmlspecialchars($item['nr_inwentarzowy']) ?></strong>
+                <?php endif; ?>
+                - Katalog Muzealny</p>
             </header>
-
-            <h1>Karta obiektu</h1>
-
-            <div class="field">
-                <span class="label">Numer inwentarzowy:</span>
-                <?= htmlspecialchars($item['nr_inwentarzowy']) ?>
-            </div>
-
-            <div class="field">
-                <span class="label">Nazwa:</span>
-                <?= htmlspecialchars($item['przedmiot']) ?>
-            </div>
-
-            <div class="field">
-                <span class="label">Dział:</span>
-                <?= htmlspecialchars($item['dzial_nazwa']) ?>
-            </div>
-
-            <div class="field">
-                <span class="label">Opis:</span>
-                <br>
-                <?= nl2br(htmlspecialchars($item['opis'])) ?>
-            </div>
-
-            <?php if (!empty($item['zdjecie_lokalne'])): ?>
-                <div style="margin-top:20px;">
-                    <img src="../images/muzealny/<?= $item['zdjecie_lokalne'] ?>" style="max-width:100%;">
+            <article>
+                <?php if (!empty($item['przedmiot'])): ?>
+                    <h1><?= htmlspecialchars($item['przedmiot']) ?>
+                        <?php if (!empty($item['dzial_nazwa'])): ?>
+                            <span>(<?= htmlspecialchars($item['dzial_nazwa']) ?>)</span>
+                        <?php endif; ?>    
+                    </h1>
+                <?php endif; ?>
+                <div class="description">
+                    <?php if (
+                        !empty($item['autor_szkola']) ||
+                        !empty($item['czas_powstania']) ||
+                        !empty($item['material_i_technika'])
+                    ): ?>
+                    <p>
+                        <?php if (!empty($item['autor_szkola'])): ?>
+                            <strong>Autor lub szkoła: </strong>
+                            <?= htmlspecialchars($item['autor_szkola']) ?>; 
+                        <?php endif; ?>
+                        <?php if (!empty($item['czas_powstania'])): ?>
+                            <strong>Czas powstania: </strong>
+                            <?= htmlspecialchars($item['czas_powstania']) ?>; 
+                        <?php endif; ?> 
+                        <?php if (!empty($item['material_i_technika'])): ?>
+                            <strong>Material i technika: </strong>
+                            <?= htmlspecialchars($item['material_i_technika']) ?>
+                        <?php endif; ?>
+                    </p>
+                    <?php endif; ?>
+                    <?php if (!empty($item['zdjecie_lokalne'])): ?>
+                        <img src="../images/muzealny/<?= $item['zdjecie_lokalne'] ?>">
+                    <?php endif; ?>
+                    <?php if (!empty($item['opis'])): ?>
+                        <p><strong>Opis: </strong>
+                        <?= nl2br(htmlspecialchars($item['opis'])) ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($item['zabiegi_konserwatorskie'])): ?>
+                        <p><strong>Zabiegi konserwatorskie: </strong>
+                        <?= nl2br(htmlspecialchars($item['zabiegi_konserwatorskie'])) ?></p>
+                    <?php endif; ?> 
+                    <?php if (!empty($item['stan_zachowania'])): ?>
+                        <p><strong>Stan zachowania: </strong>
+                        <?= nl2br(htmlspecialchars($item['stan_zachowania'])) ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($item['kraj_miejscowosc_wytwornia'])): ?>
+                        <p><strong>Kraj, miejscowość, wytwórnia: </strong>
+                        <?= nl2br(htmlspecialchars($item['kraj_miejscowosc_wytwornia'])) ?></p>
+                    <?php endif; ?>                    
+                    <?php if (!empty($item['pochodzenie'])): ?>
+                        <p><strong>Pochodzenie (historia przedmiotu), udzial w wystawach: </strong>
+                        <?= nl2br(htmlspecialchars($item['pochodzenie'])) ?></p>
+                    <?php endif; ?> 
+                    <?php if (!empty($item['dane_dodatkowe'])): ?>
+                        <p><strong>Dane dodatkowe: </strong>
+                        <?= nl2br(htmlspecialchars($item['dane_dodatkowe'])) ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($item['bibliografia'])): ?>
+                        <p><strong>Bibliografia: </strong>
+                        <?= nl2br(htmlspecialchars($item['bibliografia'])) ?></p>
+                    <?php endif; ?>                     
                 </div>
-            <?php endif; ?>
+                <div class="card">
+                    <div class="card-body">
+                        <dl class="row">
+                            <?php if (!empty($item['nr_ks_wplywu'])): ?>
+                                <dt class="col-sm-4">Nr ks. wpływu:</dt>
+                                <dd class="col-sm-8"><?= htmlspecialchars($item['nr_ks_wplywu']) ?></dd>
+                            <?php endif; ?>
+                            <?php if (!empty($item['nr_inwent_negatywu'])): ?>
+                                <dt class="col-sm-4">Nr inw. negatywu:</dt>
+                                <dd class="col-sm-8"><?= htmlspecialchars($item['nr_inwent_negatywu']) ?></dd>
+                            <?php endif; ?>
+                            <?php if (!empty($item['waga'])): ?>
+                                <dt class="col-sm-4">Waga:</dt>
+                                <dd class="col-sm-8"><?= htmlspecialchars($item['waga']) ?></dd>
+                            <?php endif; ?>
 
+                            <?php if (
+                                !empty($item['szerokosc']) ||
+                                !empty($item['wysokosc']) ||
+                                !empty($item['dlugosc'])
+                            ): ?>
+                                <dt class="col-sm-4">Wymiary:</dt>
+                                <dd class="col-sm-8">
+                                    <?php if (!empty($item['szerokosc'])): ?><?= htmlspecialchars($item['szerokosc']) ?><?php endif; ?>
+                                    <?php if (!empty($item['wysokosc'])): ?> x <?= htmlspecialchars($item['wysokosc']) ?><?php endif; ?>
+                                    <?php if (!empty($item['dlugosc'])): ?> x <?= htmlspecialchars($item['dlugosc']) ?><?php endif; ?>
+                                </dd>
+                            <?php endif; ?>
+
+
+                            <?php if (!empty($item['format'])): ?>
+                                <dt class="col-sm-4">Format</dt>
+                                <dd class="col-sm-8"><?= htmlspecialchars($item['format']) ?></dd>
+                            <?php endif; ?> 
+                            <?php if (!empty($item['data_i_sposob_nabycia'])): ?>    
+                                <dt class="col-sm-4">Data i sposób nabycia:</dt>
+                                <dd class="col-sm-8"><?= htmlspecialchars($item['data_i_sposob_nabycia']) ?></dd>
+                            <?php endif; ?>
+                            <?php if (!empty($item['wartosc'])): ?> 
+                                <dt class="col-sm-4">Wartość:</dt>
+                                <dd class="col-sm-8"><?= htmlspecialchars($item['wartosc']) ?></dd>  
+                            <?php endif; ?>
+                            <?php if (!empty($item['miejsce_przechowywania'])): ?> 
+                                <dt class="col-sm-4">Miejsce przechowywania:</dt>
+                                <dd class="col-sm-8"><?= htmlspecialchars($item['miejsce_przechowywania']) ?></dd>
+                            <?php endif; ?>
+                        </dl>
+                    </div>
+                </div>
+            </article>
             <footer>
-                <p>&copy; Copy right by <strong class="headerTXT">Muzeum Zamojskie w Zamościu</strong></p>
+                <p>&copy; Copyright by <strong class="headerTXT">Muzeum Zamojskie w Zamościu</strong></p>
                 <p><?php if (!empty($item['data_i_wypelniajacy'])): ?>
                     Wypełniono: <strong><?= htmlspecialchars($item['data_i_wypelniajacy']) ?></strong>&nbsp;
                 <?php endif; ?>

@@ -30,7 +30,7 @@
     </table>
 </div>
 <footer>
-    <p>&copy;&nbsp;<?php echo date("Y"); ?>&nbsp;Copy right by <strong>Muzeum Zamojskie w Zamościu</strong></p>
+    <p>&copy;&nbsp;<?php echo date("Y"); ?>&nbsp;Copyright by <strong>Muzeum Zamojskie w Zamościu</strong></p>
 </footer>
 
 <!-- IMAGE MODAL -->
