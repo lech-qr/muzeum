@@ -1,6 +1,7 @@
 ﻿// Nawigacja
 $(document).ready(function () {
     let katalog = $('#katalog').text();
+    // console.log("Obecny katalog to katalog " + katalog);
     $('nav a').removeClass('active');
     $('#' + katalog).addClass('active');
     // Dodaj href na podstawie id, ale tylko dla nieaktywnego
@@ -9,10 +10,13 @@ $(document).ready(function () {
         if ($(this).hasClass('active')) {
             $(this).removeAttr('href');
         } else {
-            $(this).attr('href', '../katalog-' + thisNav);
+            if (katalog === 'mainNav') {
+                $(this).attr('href', '/katalog-' + thisNav);
+            } else {
+                $(this).attr('href', '../katalog-' + thisNav);
+            }
         }
     });
-
 });
 
 // Pokaz zdjęć

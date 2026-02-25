@@ -1,0 +1,6 @@
+﻿Options +FollowSymLinks
+RewriteEngine On
+
+RewriteRule ^katalog-muzealny/([0-9]+)-(.+)/?$ details/karta-katalog-muzealny.php?id=$1 [L,QSA]
+RewriteRule ^katalog-archeologiczny/([0-9]+)-(.+)/?$ details/karta-katalog-archeologiczny.php?id=$1 [L,QSA]
+RewriteRule ^katalog-biblioteczny/([0-9]+)-(.+)/?$ details/karta-katalog-biblioteczny.php?id=$1 [L,QSA]

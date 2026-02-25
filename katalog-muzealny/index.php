@@ -5,14 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Katalog <?php echo $katalog; ?> - Muzeum Zamojskiego w Zamościu</title>
-
-    <link rel="icon" href="../images/32x32.jpg" sizes="32x32" />
-    <link rel="icon" href="../images/192x192.jpg" sizes="192x192" />
-    <link rel="apple-touch-icon" href="../images/180x180.jpg" />
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/2.3.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <link href="../assets/style/css/style.css" rel="stylesheet">
+    <?php require_once '../assets/php/head.php'; ?>
 </head>
 <body>
 
@@ -36,6 +29,9 @@
         </thead>
     </table>
 </div>
+<footer>
+    <p>&copy;&nbsp;<?php echo date("Y"); ?>&nbsp;Copy right by <strong>Muzeum Zamojskie w Zamościu</strong></p>
+</footer>
 
 <!-- IMAGE MODAL -->
 <div id="imageModal" class="img-modal">
