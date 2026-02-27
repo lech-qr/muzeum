@@ -21,16 +21,17 @@ $(function () {
                 data: 'zdjecie_lokalne',
                 class: 'img-column',
                 orderable: false,
-                render: function (data) {
+                render: function (data, type, row, meta) {
 
                     if (!data) return '';
 
                     return `
-            <img 
-                src="../images/muzealny/${data}" 
-                onclick="openImageModal('../images/muzealny/${data}')"
-            >
-        `;
+                    <img 
+                        src="../images/muzealny/${data}" 
+                        style="height:60px; cursor:pointer;"
+                        onclick="openGallery(${row.id}, 0)"
+                    >
+                `;
                 }
             },
             { data: 'autor_szkola' },
