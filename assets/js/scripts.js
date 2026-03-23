@@ -46,38 +46,51 @@ let currentTitle = '';
 let currentIndex = 0;
 let prevItemId;
 let nextItemId;
-window.openGallery = function (itemId, imageIndex = 0) {
+window.openGallery = function (itemId, imageIndex = 0, type = 'muzealny') {
 
-    console.log("Kliknięto ID:", itemId);
+    console.log("Kliknięto ID:", itemId, "Typ:", type);
 
-    $.getJSON('../../api/getGallery.php', { id: itemId }, function (data) {
+    currentType = type; // 🔥 KLUCZOWE
 
-        currentItemId = data.id;
-        currentImages = data.images;
-        currentTitle = data.title || '';
-        currentIndex = imageIndex;
-        prevItemId = data.prev;
-        nextItemId = data.next;
+    $.getJSON('../../api/getGallery.php',
+        {
+            id: itemId,
+            type: type
+        },
+        function (data) {
 
-        showImage();
-        $('#imageModal').addClass('active');
-    });
+            currentItemId = data.id;
+            currentImages = data.images;
+            currentTitle = data.title || '';
+            currentIndex = imageIndex;
+            prevItemId = data.prev;
+            nextItemId = data.next;
 
+            showImage();
+            $('#imageModal').addClass('active');
+        }
+    );
 };
 
 function showImage() {
-    $('#modalImage').attr('src', '/images/muzealny/' + currentImages[currentIndex]);
+
+    if (!currentImages.length) return;
+
+    const imagePath = `/images/${currentType}/${currentImages[currentIndex]}`;
+
+    $('#modalImage').attr('src', imagePath);
     $('#modalCaption').text(currentTitle);
 }
+
 // Poprzedni modal
 $('#modalPrev').on('click', function () {
     if (!prevItemId) return;   // 🔒 zabezpieczenie
-    openGallery(prevItemId);
+    openGallery(nextItemId, 0, currentType);
 });
 // Następny modal
 $('#modalNext').on('click', function () {
     if (!nextItemId) return;   // 🔒 zabezpieczenie
-    openGallery(nextItemId);
+    openGallery(nextItemId, 0, currentType);
 });
 // Obsługa klawiaturą
 $(document).on('keydown', function (e) {

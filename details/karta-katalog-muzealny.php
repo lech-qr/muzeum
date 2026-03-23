@@ -112,20 +112,22 @@ function slugify($text) {
                         !empty($item['czas_powstania']) ||
                         !empty($item['material_i_technika'])
                     ): ?>
-                    <p>
-                        <?php if (!empty($item['autor_szkola'])): ?>
-                            <strong>Autor lub szkoła: </strong>
-                            <?= htmlspecialchars($item['autor_szkola']) ?>; 
-                        <?php endif; ?>
-                        <?php if (!empty($item['czas_powstania'])): ?>
-                            <strong>Czas powstania: </strong>
-                            <?= htmlspecialchars($item['czas_powstania']) ?>; 
-                        <?php endif; ?> 
-                        <?php if (!empty($item['material_i_technika'])): ?>
-                            <strong>Material i technika: </strong>
-                            <?= htmlspecialchars($item['material_i_technika']) ?>
-                        <?php endif; ?>
-                    </p>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <?php if (!empty($item['autor_szkola'])): ?><th>Autor lub szkoła:</th><?php endif; ?>
+                                        <?php if (!empty($item['czas_powstania'])): ?><th>Czas powstania:</th><?php endif; ?>
+                                        <?php if (!empty($item['material_i_technika'])): ?><th>Material i technika:</th><?php endif; ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <?php if (!empty($item['autor_szkola'])): ?><td><?= htmlspecialchars($item['autor_szkola']) ?>;</td><?php endif; ?>
+                                        <?php if (!empty($item['czas_powstania'])): ?><td><?= htmlspecialchars($item['czas_powstania']) ?></td><?php endif; ?>
+                                        <?php if (!empty($item['material_i_technika'])): ?><td><?= htmlspecialchars($item['material_i_technika']) ?></td><?php endif; ?>
+                                    </tr>
+                                </tbody>
+                            </table>
                     <?php endif; ?>
                     <?php if (!empty($item['zdjecie_lokalne'])): ?>
                         <img src="../images/muzealny/<?= $item['zdjecie_lokalne'] ?>">

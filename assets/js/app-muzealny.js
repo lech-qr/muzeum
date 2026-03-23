@@ -1,3 +1,5 @@
+let currentType = 'muzealny';
+
 $(function () {
 
     // $('#itemsTable').DataTable({
@@ -15,7 +17,7 @@ $(function () {
         order: [[0, "asc"]],
         columns: [
             { data: 'id' },
-            { data: 'dzial', orderable: false },
+            { data: 'dzial' },
             { data: 'przedmiot' },
             {
                 data: 'zdjecie_lokalne',
@@ -48,31 +50,6 @@ $(function () {
                 }
             }
         ],
-        // Filtrowanie działów
-        initComplete: function () {
-
-            this.api().columns(1).every(function () {
-
-                let column = this;
-
-                let select = $('<select><option value="">Wszystkie działy</option></select>')
-                    .appendTo($(column.header()).empty())
-                    .on('change', function () {
-
-                        let val = $.fn.dataTable.util.escapeRegex($(this).val());
-
-                        column
-                            .search(val ? '^' + val + '$' : '', true, false)
-                            .draw();
-                    });
-
-                column.data().unique().sort().each(function (d) {
-                    select.append('<option value="' + d + '">' + d + '</option>');
-                });
-
-            });
-
-        }
     });
 
     // Obsługa kliknięcia w wiersz tabeli - otwarcie karty katalogowej

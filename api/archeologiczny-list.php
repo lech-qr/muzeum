@@ -1,20 +1,13 @@
 <?php
 
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
-
 require_once '../config.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
 $draw   = $_POST['draw'] ?? 0;
-$start  = $_POST['start'] ?? 0;
-$length = $_POST['length'] ?? 25;
-$search = $_POST['search']['value'] ?? '';
-$search = trim($search);
-
-$start  = (int) $start;
-$length = (int) $length;
+$start  = (int) ($_POST['start'] ?? 0);
+$length = (int) ($_POST['length'] ?? 25);
+$search = trim($_POST['search']['value'] ?? '');
 
 $orderColumnIndex = $_POST['order'][0]['column'] ?? 0;
 $orderDir = $_POST['order'][0]['dir'] ?? 'asc';
@@ -22,21 +15,21 @@ $orderDir = $orderDir === 'desc' ? 'DESC' : 'ASC';
 
 /*
 |--------------------------------------------------------------------------
-| MAPOWANIE KOLUMN (musi odpowiadać kolejności w DataTables)
+| MAPOWANIE KOLUMN (zgodne z DataTables)
 |--------------------------------------------------------------------------
 */
 
 $allowedColumns = [
-    0 => 'r.id',
-    1 => 'd.nazwa',
-    2 => 'r.przedmiot',
-    3 => 'r.zdjecie_lokalne',
-    4 => 'r.autor_szkola',
-    5 => 'r.nr_inwentarzowy',
-    6 => 'r.opis'
+    0 => 'id',
+    1 => 'przedmiot',
+    2 => 'szczegolowa_charakterystyka',
+    3 => 'zdjecie_lokalne',
+    4 => 'chronologia',
+    5 => 'kultura',
+    6 => 'nr_inwentarzowy'
 ];
 
-$columnName = $allowedColumns[$orderColumnIndex] ?? 'r.id';
+$columnName = $allowedColumns[$orderColumnIndex] ?? 'id';
 
 /*
 |--------------------------------------------------------------------------
@@ -50,14 +43,13 @@ $params = [];
 if ($search !== '') {
 
     $where = " WHERE (
-        r.id LIKE :s0
-        OR r.przedmiot LIKE :s1
-        OR r.nr_inwentarzowy LIKE :s2
-        OR r.autor_szkola LIKE :s3
-        OR r.czas_powstania LIKE :s4
-        OR d.nazwa LIKE :s5
+        id LIKE :s0
+        OR przedmiot LIKE :s1
+        OR szczegolowa_charakterystyka LIKE :s2
+        OR chronologia LIKE :s3
+        OR kultura LIKE :s4
+        OR nr_inwentarzowy LIKE :s5
     )";
-
 
     $params = [
         ':s0' => "%$search%",
@@ -71,21 +63,20 @@ if ($search !== '') {
 
 /*
 |--------------------------------------------------------------------------
-| GŁÓWNE ZAPYTANIE (z LIMIT)
+| GŁÓWNE ZAPYTANIE
 |--------------------------------------------------------------------------
 */
 
 $sql = "
     SELECT 
-        r.id,
-        d.nazwa AS dzial,
-        r.przedmiot,
-        r.zdjecie_lokalne,
-        r.autor_szkola,
-        r.nr_inwentarzowy,
-        r.opis
-    FROM muzealny r
-    JOIN dzialy d ON r.dzialy_id = d.id
+        id,
+        przedmiot,
+        szczegolowa_charakterystyka,
+        zdjecie_lokalne,
+        chronologia,
+        kultura,
+        nr_inwentarzowy
+    FROM archeologiczny
     $where
     ORDER BY $columnName $orderDir
     LIMIT $start, $length
@@ -93,24 +84,20 @@ $sql = "
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
-
-$stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 /*
 |--------------------------------------------------------------------------
-| recordsTotal (bez filtra)
+| recordsTotal
 |--------------------------------------------------------------------------
 */
 
-$totalRecords = $pdo->query("
-    SELECT COUNT(*) 
-    FROM muzealny
-")->fetchColumn();
+$totalRecords = $pdo->query("SELECT COUNT(*) FROM archeologiczny")
+    ->fetchColumn();
 
 /*
 |--------------------------------------------------------------------------
-| recordsFiltered (z filtrem)
+| recordsFiltered
 |--------------------------------------------------------------------------
 */
 
@@ -118,15 +105,12 @@ if ($search !== '') {
 
     $countSql = "
         SELECT COUNT(*)
-        FROM muzealny r
-        JOIN dzialy d ON r.dzialy_id = d.id
+        FROM archeologiczny
         $where
     ";
 
     $countStmt = $pdo->prepare($countSql);
-
     $countStmt->execute($params);
-
     $recordsFiltered = $countStmt->fetchColumn();
 
 } else {
@@ -135,7 +119,7 @@ if ($search !== '') {
 
 /*
 |--------------------------------------------------------------------------
-| ODPOWIEDŹ JSON
+| RESPONSE
 |--------------------------------------------------------------------------
 */
 

@@ -1,0 +1,43 @@
+﻿<?php $katalog = "biblioteczny"; ?>
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Katalog <?php echo $katalog; ?> - Muzeum Zamojskiego w Zamościu</title>
+    <?php require_once '../assets/php/head.php'; ?>
+</head>
+<body>
+
+<div class="container mt-4">
+
+    <?php require_once '../assets/php/navigation.php'; ?>
+
+    <h2 class="mb-4">Katalog <span id="katalog"><?php echo $katalog; ?></span> - Muzeum Zamojskiego w Zamościu</h2>
+
+    <table id="itemsTable" class="table table-striped table-bordered w-100 <?php echo $katalog; ?>">
+        <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Autor</th>            
+            <th>Tytuł</th>
+            <th>Rok wydania - wydawca</th>
+            <th>Nr. inw.</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<footer>
+    <p>&copy;&nbsp;<?php echo date("Y"); ?>&nbsp;Copyright by <strong>Muzeum Zamojskie w Zamościu</strong></p>
+</footer>
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.7/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="../assets/js/app-biblioteczny.js"></script>
+<script src="../assets/js/scripts.js"></script>
+
+</body>
+</html>

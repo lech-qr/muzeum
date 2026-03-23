@@ -1,46 +1,30 @@
-<?php
-
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
+﻿<?php
 
 require_once '../config.php';
-
 header('Content-Type: application/json; charset=utf-8');
 
 $draw   = $_POST['draw'] ?? 0;
-$start  = $_POST['start'] ?? 0;
-$length = $_POST['length'] ?? 25;
-$search = $_POST['search']['value'] ?? '';
-$search = trim($search);
-
-$start  = (int) $start;
-$length = (int) $length;
+$start  = (int) ($_POST['start'] ?? 0);
+$length = (int) ($_POST['length'] ?? 25);
+$search = trim($_POST['search']['value'] ?? '');
 
 $orderColumnIndex = $_POST['order'][0]['column'] ?? 0;
 $orderDir = $_POST['order'][0]['dir'] ?? 'asc';
 $orderDir = $orderDir === 'desc' ? 'DESC' : 'ASC';
 
-/*
-|--------------------------------------------------------------------------
-| MAPOWANIE KOLUMN (musi odpowiadać kolejności w DataTables)
-|--------------------------------------------------------------------------
-*/
-
 $allowedColumns = [
-    0 => 'r.id',
-    1 => 'd.nazwa',
-    2 => 'r.przedmiot',
-    3 => 'r.zdjecie_lokalne',
-    4 => 'r.autor_szkola',
-    5 => 'r.nr_inwentarzowy',
-    6 => 'r.opis'
+    0 => 'id',
+    1 => 'autor',
+    2 => 'tytul',
+    3 => 'rok_wydania_wydawca',
+    4 => 'nr_inwentarzowy'
 ];
 
-$columnName = $allowedColumns[$orderColumnIndex] ?? 'r.id';
+$columnName = $allowedColumns[$orderColumnIndex] ?? 'id';
 
 /*
 |--------------------------------------------------------------------------
-| WHERE (wyszukiwanie)
+| WHERE
 |--------------------------------------------------------------------------
 */
 
@@ -50,42 +34,36 @@ $params = [];
 if ($search !== '') {
 
     $where = " WHERE (
-        r.id LIKE :s0
-        OR r.przedmiot LIKE :s1
-        OR r.nr_inwentarzowy LIKE :s2
-        OR r.autor_szkola LIKE :s3
-        OR r.czas_powstania LIKE :s4
-        OR d.nazwa LIKE :s5
+        id LIKE :s0
+        OR autor LIKE :s1
+        OR tytul LIKE :s2
+        OR rok_wydania_wydawca LIKE :s3
+        OR nr_inwentarzowy LIKE :s4
     )";
-
 
     $params = [
         ':s0' => "%$search%",
         ':s1' => "%$search%",
         ':s2' => "%$search%",
         ':s3' => "%$search%",
-        ':s4' => "%$search%",
-        ':s5' => "%$search%"
+        ':s4' => "%$search%"
     ];
 }
 
 /*
 |--------------------------------------------------------------------------
-| GŁÓWNE ZAPYTANIE (z LIMIT)
+| SELECT
 |--------------------------------------------------------------------------
 */
 
 $sql = "
     SELECT 
-        r.id,
-        d.nazwa AS dzial,
-        r.przedmiot,
-        r.zdjecie_lokalne,
-        r.autor_szkola,
-        r.nr_inwentarzowy,
-        r.opis
-    FROM muzealny r
-    JOIN dzialy d ON r.dzialy_id = d.id
+        id,
+        autor,
+        tytul,
+        rok_wydania_wydawca,
+        nr_inwentarzowy
+    FROM biblioteczny
     $where
     ORDER BY $columnName $orderDir
     LIMIT $start, $length
@@ -93,40 +71,34 @@ $sql = "
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
-
-$stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 /*
 |--------------------------------------------------------------------------
-| recordsTotal (bez filtra)
+| recordsTotal
 |--------------------------------------------------------------------------
 */
 
 $totalRecords = $pdo->query("
-    SELECT COUNT(*) 
-    FROM muzealny
+    SELECT COUNT(*) FROM biblioteczny
 ")->fetchColumn();
 
 /*
 |--------------------------------------------------------------------------
-| recordsFiltered (z filtrem)
+| recordsFiltered
 |--------------------------------------------------------------------------
 */
 
 if ($search !== '') {
 
     $countSql = "
-        SELECT COUNT(*)
-        FROM muzealny r
-        JOIN dzialy d ON r.dzialy_id = d.id
+        SELECT COUNT(*) 
+        FROM biblioteczny
         $where
     ";
 
     $countStmt = $pdo->prepare($countSql);
-
     $countStmt->execute($params);
-
     $recordsFiltered = $countStmt->fetchColumn();
 
 } else {
@@ -135,16 +107,15 @@ if ($search !== '') {
 
 /*
 |--------------------------------------------------------------------------
-| ODPOWIEDŹ JSON
+| JSON
 |--------------------------------------------------------------------------
 */
 
-$response = [
+echo json_encode([
     "draw" => intval($draw),
     "recordsTotal" => intval($totalRecords),
     "recordsFiltered" => intval($recordsFiltered),
     "data" => $data
-];
+], JSON_UNESCAPED_UNICODE);
 
-echo json_encode($response, JSON_UNESCAPED_UNICODE);
 exit;

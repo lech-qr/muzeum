@@ -163,6 +163,13 @@ nav.btn-group {
       }
     }
   }
+  &.biblioteczny {
+    tbody {
+      tr {
+        cursor: default;
+      }
+    }
+  }
 }
 
 // Karta przedmiotu
@@ -300,11 +307,11 @@ body.card-page {
 
   .print-btn,
   .link-btn,
-  .nav-btn {
+  body.card-page a.nav-btn {
     display: none;
   }
 
-  .a4 {
+  body.card-page .a4 {
     box-shadow: none;
     margin: 0;
   }
