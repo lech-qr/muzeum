@@ -1,3 +1,5 @@
+<meta name="robots" content="noindex, nofollow" />
+
 <link rel="icon" href="/images/32x32.jpg" sizes="32x32" />
 <link rel="icon" href="/images/192x192.jpg" sizes="192x192" />
 <link rel="apple-touch-icon" href="/images/180x180.jpg" />

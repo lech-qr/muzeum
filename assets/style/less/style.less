@@ -210,7 +210,7 @@ body.card-page {
     @footer: 16mm;
     header {
       height: @header;
-      background-color: #e4e4e4;
+      background-color: #f6f6f6;
       padding: 0 10mm;
       text-align: center;
       h3 {
@@ -232,10 +232,15 @@ body.card-page {
         }
       }
       .description {
-        img {
+        picture {
           float: right;
           width: 40%;
+          max-height: 70mm;
           margin: 0 0 3mm 5mm;
+          text-align: right;
+        }
+        img {
+          max-height: inherit;
         }
         p {
           text-align: justify;

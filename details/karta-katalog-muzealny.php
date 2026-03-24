@@ -130,7 +130,9 @@ function slugify($text) {
                             </table>
                     <?php endif; ?>
                     <?php if (!empty($item['zdjecie_lokalne'])): ?>
-                        <img src="../images/muzealny/<?= $item['zdjecie_lokalne'] ?>">
+                        <picture>
+                            <img src="../images/muzealny/<?= $item['zdjecie_lokalne'] ?>">
+                        </picture>
                     <?php endif; ?>
                     <?php if (!empty($item['opis'])): ?>
                         <p><strong>Opis: </strong>
@@ -177,16 +179,23 @@ function slugify($text) {
                                 <dd class="col-sm-8"><?= htmlspecialchars($item['waga']) ?></dd>
                             <?php endif; ?>
 
-                            <?php if (
-                                !empty($item['szerokosc']) ||
-                                !empty($item['wysokosc']) ||
-                                !empty($item['dlugosc'])
-                            ): ?>
+                            <?php
+                            $wymiary = [];
+
+                            if (!empty($item['wysokosc'])) {
+                                $wymiary[] = htmlspecialchars($item['wysokosc']) . ' (wys)';
+                            }
+                            if (!empty($item['dlugosc'])) {
+                                $wymiary[] = htmlspecialchars($item['dlugosc']) . ' (dł)';
+                            }
+                            if (!empty($item['szerokosc'])) {
+                                $wymiary[] = htmlspecialchars($item['szerokosc']) . ' (szer)';
+                            }
+                            ?>
+                            <?php if (!empty($wymiary)): ?>
                                 <dt class="col-sm-4">Wymiary:</dt>
                                 <dd class="col-sm-8">
-                                    <?php if (!empty($item['szerokosc'])): ?><?= htmlspecialchars($item['szerokosc']) ?><?php endif; ?>
-                                    <?php if (!empty($item['wysokosc'])): ?> x <?= htmlspecialchars($item['wysokosc']) ?><?php endif; ?>
-                                    <?php if (!empty($item['dlugosc'])): ?> x <?= htmlspecialchars($item['dlugosc']) ?><?php endif; ?>
+                                    <?= implode(' x ', $wymiary) ?>
                                 </dd>
                             <?php endif; ?>
 

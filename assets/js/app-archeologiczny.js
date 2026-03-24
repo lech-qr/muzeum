@@ -84,6 +84,7 @@ $(function () {
 
             window.open(
                 "/katalog-archeologiczny/" + data.id + "-" + slug,
+                "kartaProduktu",
                 "width=1200,height=1100,menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes"
             );
         }
