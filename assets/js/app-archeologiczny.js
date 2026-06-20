@@ -2,8 +2,8 @@ let currentType = 'archeologiczny';
 
 $(function () {
 
+    // $('#itemsTable').DataTable({
     const table = $('#itemsTable').DataTable({
-
         processing: true,
         serverSide: true,
         ajax: {
@@ -56,26 +56,21 @@ $(function () {
         ]
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Klik w wiersz → karta
-    |--------------------------------------------------------------------------
-    */
-
+    // Obsługa kliknięcia w wiersz tabeli - otwarcie karty katalogowej
     $('#itemsTable tbody').on('click', 'tr', function (e) {
 
-        if ($(e.target).is('img') || $(e.target).is('a')) return;
+        // jeśli kliknięto obrazek → nie rób nic
+        if ($(e.target).is('img')) return;
 
-        const data = table.row(this).data();
+        var data = table.row(this).data();
 
         if (data && data.id) {
-
             function slugify(text) {
                 return text
                     .toString()
                     .toLowerCase()
                     .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[\u0300-\u036f]/g, "") // usuwa polskie znaki
                     .replace(/[^a-z0-9]+/g, "-")
                     .replace(/(^-|-$)+/g, "");
             }
@@ -83,11 +78,11 @@ $(function () {
             const slug = slugify(data.przedmiot);
 
             window.open(
-                "/katalog-archeologiczny/" + data.id + "-" + slug,
+                data.id + "-" + slug,
                 "kartaProduktu",
                 "width=1200,height=1100,menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes"
             );
+
         }
     });
-
 });

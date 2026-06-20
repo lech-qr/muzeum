@@ -74,11 +74,11 @@ $(function () {
             const slug = slugify(data.przedmiot);
 
             window.open(
-                // "../details/karta-katalog-muzealny.php?id=" + data.id,
-                "/katalog-muzealny/" + data.id + "-" + slug,
+                data.id + "-" + slug,
                 "kartaProduktu",
                 "width=1200,height=1100,menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes"
             );
+
         }
     });
 });

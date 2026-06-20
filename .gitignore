@@ -6,6 +6,9 @@
 # User-specific files
 images/
 config.php
+hash.php
+*.sql
+*.zip
 *.rsuser
 *.suo
 *.user

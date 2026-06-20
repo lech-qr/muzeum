@@ -72,7 +72,7 @@ function slugify($text) {
         <!-- Przyciski Poprzedni / Następny -->
         <?php if ($prev): ?>
             <a class="nav-btn prev" title="Poprzednia karta"
-            href="/katalog-muzealny/<?= $prev['id'] ?>-<?= slugify($prev['przedmiot']) ?>">
+            href="<?= BASE_URL ?>/katalog-muzealny/<?= $prev['id'] ?>-<?= slugify($prev['przedmiot']) ?>">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
                 </svg>
@@ -81,7 +81,7 @@ function slugify($text) {
 
         <?php if ($next): ?>
             <a class="nav-btn next" title="Następna karta"
-            href="/katalog-muzealny/<?= $next['id'] ?>-<?= slugify($next['przedmiot']) ?>">
+            href="<?= BASE_URL ?>/katalog-muzealny/<?= $next['id'] ?>-<?= slugify($next['przedmiot']) ?>">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
             </svg>

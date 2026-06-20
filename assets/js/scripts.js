@@ -1,4 +1,7 @@
-﻿// Nawigacja
+// const BASE_URL = "/katalogi_muzealne";
+const BASE_URL = "";
+
+// Nawigacja
 $(document).ready(function () {
     let katalog = $('#katalog').text();
     // console.log("Obecny katalog to katalog " + katalog);
@@ -11,7 +14,7 @@ $(document).ready(function () {
             $(this).removeAttr('href');
         } else {
             if (katalog === 'mainNav') {
-                $(this).attr('href', '/katalog-' + thisNav);
+                $(this).attr('href', BASE_URL + '/katalog-' + thisNav);
             } else {
                 $(this).attr('href', '../katalog-' + thisNav);
             }
@@ -52,7 +55,7 @@ window.openGallery = function (itemId, imageIndex = 0, type = 'muzealny') {
 
     currentType = type; // 🔥 KLUCZOWE
 
-    $.getJSON('../../api/getGallery.php',
+    $.getJSON(BASE_URL + '/api/getGallery.php',
         {
             id: itemId,
             type: type
@@ -76,7 +79,7 @@ function showImage() {
 
     if (!currentImages.length) return;
 
-    const imagePath = `/images/${currentType}/${currentImages[currentIndex]}`;
+    const imagePath = `${BASE_URL}/images/${currentType}/${currentImages[currentIndex]}`;
 
     $('#modalImage').attr('src', imagePath);
     $('#modalCaption').text(currentTitle);
@@ -142,7 +145,7 @@ $('#modalImage').on('click', function (e) {
     const height = 1100;
 
     window.open(
-        "/katalog-muzealny/" + currentItemId + "-" + slug,
+        currentItemId + "-" + slug,
         "kartaProduktu",
         `width=${width},height=${height},
          menubar=no,toolbar=no,location=no,status=no,
